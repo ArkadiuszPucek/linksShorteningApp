@@ -36,11 +36,6 @@ public class LinkService {
         return link.map(LinkDtoMapper::map);
     }
 
-    public Optional<LinkDto> findLinkById(String id){
-        return linkRepository.findById(id)
-                .map(LinkDtoMapper::map);
-    }
-
     @Transactional
     public void updateLink(String linkId, LinkUpdateDto link){
         Optional<Link> linkToUpdate = linkRepository.findById(linkId);
@@ -48,6 +43,21 @@ public class LinkService {
         linkToUpdate.filter(entity -> checkPassword(entity, link.getPassword()))
                 .orElseThrow(InvalidPasswordException::new)
                 .setName(link.getName());
+    }
+
+    @Transactional
+    public void deleteById(String linkId, String password){
+        Optional<Link> linkById = linkRepository.findById(linkId);
+        if (linkById.isPresent()){
+            Link linkToDelete = linkById.filter(link -> checkPassword(link, password))
+                    .orElseThrow(InvalidPasswordException::new);
+            linkRepository.delete(linkToDelete);
+        }
+    }
+
+    public Optional<LinkDto> findLinkById(String id){
+        return linkRepository.findById(id)
+                .map(LinkDtoMapper::map);
     }
 
     private boolean checkPassword(Link entity, String password) {

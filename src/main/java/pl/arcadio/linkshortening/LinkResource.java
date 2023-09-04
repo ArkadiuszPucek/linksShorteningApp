@@ -53,4 +53,17 @@ public class LinkResource {
                     .build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> deleteById(@PathVariable String id,
+                                 @RequestHeader String passwd){
+        try {
+            linkService.deleteById(id,  passwd);
+            return ResponseEntity.noContent().build();
+        } catch (InvalidPasswordException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .header("reason", e.getMessage())
+                    .build();
+        }
+    }
 }
