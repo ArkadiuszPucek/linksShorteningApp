@@ -1,4 +1,4 @@
-package pl.arcadio.linkshortening;
+package pl.arcadio.linkshortening.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class LinkCreateDto {
     private String name;
+    private String password;
     private String targetUrl;
 }

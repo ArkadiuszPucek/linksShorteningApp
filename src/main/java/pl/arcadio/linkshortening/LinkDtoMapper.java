@@ -1,6 +1,7 @@
 package pl.arcadio.linkshortening;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.arcadio.linkshortening.dto.LinkDto;
 
 public class LinkDtoMapper {
     public static LinkDto map(Link link){

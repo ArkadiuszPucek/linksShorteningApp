@@ -1,8 +1,14 @@
 package pl.arcadio.linkshortening;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.arcadio.linkshortening.dto.LinkCreateDto;
+import pl.arcadio.linkshortening.dto.LinkDto;
+import pl.arcadio.linkshortening.dto.LinkUpdateDto;
+import pl.arcadio.linkshortening.exceptions.InvalidPasswordException;
+import pl.arcadio.linkshortening.exceptions.LinkNotFoundException;
 
 import java.net.URI;
 
@@ -31,5 +37,20 @@ public class LinkResource {
         return linkService.findLinkById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{id}")
+    ResponseEntity<?> update(@PathVariable String id,
+                             @RequestBody LinkUpdateDto link){
+        try {
+            linkService.updateLink(id, link);
+            return ResponseEntity.noContent().build();
+        } catch (LinkNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }catch (InvalidPasswordException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .header("reason", e.getMessage())
+                    .build();
+        }
     }
 }

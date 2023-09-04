@@ -1,4 +1,4 @@
-package pl.arcadio.linkshortening;
+package pl.arcadio.linkshortening.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
